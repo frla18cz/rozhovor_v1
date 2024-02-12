@@ -1,0 +1,7 @@
+openai
+streamlit
+Pillow
+streamlit-lottie
+mysql-connector-python
+requests
+toml
