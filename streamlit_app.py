@@ -5,6 +5,23 @@ import os
 from modules.lottie import lottie_animation_uvodni, lottie_animation, load_lottieurl
 
 
+# Inicializace api key. Uloženo na cloudu streamlit v secret
+openai.api_key = st.secrets["API_KEY"]
+# assistant_id = st.secrets["ASSISTANT_ID"]
+# assistant_id = "asst_atZWsxED84ngEs7lXxCAKR9Q" #Pro testovací účely, light prompt
+client = openai
+
+# Funkce pro načtení seznamu asistentů
+def nacist_seznam_asistentu():
+    try:
+        response = openai.client.beta.assistants.list()
+        asistenti_tuple = [(assistant.id, assistant.name) for assistant in response.data]
+        return asistenti_tuple
+    except Exception as e:
+        st.error(f"Chyba při načítání asistentů: {e}")
+        return []
+
+
 # Nastavení Streamlit
 st.set_page_config(page_title="Home page", page_icon=":speech_balloon:")
 st.title("😊💡Home page!🔍")
@@ -16,17 +33,19 @@ st.image(img_path, caption='', use_column_width=True)
 lottie_animation_uvodni("https://lottie.host/ae43b28d-b082-4249-bc22-144e1ceed7f7/ebUqhkyptl.json", 1)
 # Definice funkce pro stránku "Databáze"
 
+# Vytvoření rozklikávacího seznamu pro výběr asistenta
+asistenti_tuple = nacist_seznam_asistentu()
+if asistenti_tuple:
+    vybrany_asistent = st.sidebar.selectbox('Vyberte asistenta:', asistenti_tuple, format_func=lambda x: x[1])
+    assistant_id = vybrany_asistent[0]  # Aktualizujte globální proměnnou assistant_id na základě výběru
+else:
+    st.sidebar.error("Nepodařilo se načíst seznam asistentů.")
+
 model_choice = st.sidebar.selectbox(
     'Vyberte model:',
     ('gpt-4-0125-preview', 'gpt-4-preview', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-0125'),
     index=3
 )
-
-# Inicializace api key a ID. Uloženo na cloudu streamlit v secret
-openai.api_key = st.secrets["API_KEY"]
-assistant_id = st.secrets["ASSISTANT_ID"]
-# assistant_id = "asst_atZWsxED84ngEs7lXxCAKR9Q" #Pro testovací účely, light prompt
-client = openai
 
 
 def initialize_session():
