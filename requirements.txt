@@ -5,3 +5,4 @@ streamlit-lottie
 mysql-connector-python
 requests
 toml
+pandas
