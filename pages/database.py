@@ -4,25 +4,19 @@ import pandas as pd
 from modules.database.st_database_login import get_database_connection
 from modules.database.assistants_db_settings import get_assistants, get_assistant_by_id
 
-
 st.title("Databáze - Test")
 
 assistants = get_assistants()
 if assistants:  # Zkontrolujte, zda existují nějací asistenti
-    # Vytvoření slovníku pro možnosti výběru s předvolbou "Vyberte..."
-    assistant_options = {"Vyberte...": 0}
-    # Přidání skutečných asistentů do slovníku možností
-    assistant_options.update({assistant['name']: assistant['id'] for assistant in assistants})
+    # Vytvoření seznamu názvů asistentů s předvolbou "Vyberte..."
+    assistant_names = ["Vyberte..."] + [assistant['name'] for assistant in assistants]
 
-    # Umožnění uživatelům vybrat asistenta
-    selected_assistant_id = st.selectbox(
-        "Vyberte assistenta:",
-        options=list(assistant_options.values()),
-        format_func=lambda x: [name for name, id in assistant_options.items() if id == x][0]
-    )
+    # Necháme uživatele vybrat asistenta podle jména
+    selected_name = st.selectbox("Vyberte assistenta:", options=assistant_names)
 
-    if selected_assistant_id and selected_assistant_id != 0:
-        selected_assistant = get_assistant_by_id(selected_assistant_id)
+    if selected_name != "Vyberte...":
+        # Získání informací o vybraném asistentovi na základě jména
+        selected_assistant = next((assistant for assistant in assistants if assistant['name'] == selected_name), None)
 
         if selected_assistant:
             # Příprava dat pro zobrazení
