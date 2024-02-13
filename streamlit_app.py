@@ -14,7 +14,7 @@ client = openai
 # Funkce pro načtení seznamu asistentů
 def nacist_seznam_asistentu():
     try:
-        response = openai.client.beta.assistants.list()
+        response = client.beta.assistants.list()
         asistenti_tuple = [(assistant.id, assistant.name) for assistant in response.data]
         return asistenti_tuple
     except Exception as e:
