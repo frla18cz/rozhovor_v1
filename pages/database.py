@@ -2,8 +2,8 @@ import streamlit as st
 import mysql.connector
 from modules.database.st_database_login import get_database_connection
 
+st.title("Databáze - Test")
 
-# Předpokládám, že `local_db_login` je funkce nebo proměnná, kterou zde nepoužíváte, takže ji z příkladu vynechávám.
 
 def database_page_show():
     st.title("Databáze")
