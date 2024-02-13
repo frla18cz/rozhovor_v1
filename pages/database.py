@@ -9,7 +9,7 @@ def database_page_show():
 
     try:
         cnx = mysql.connector.connect(user=st.secrets["database"]["user"],
-                                      password=st.secrets["password"],
+                                      password=st.secrets["database"]["password"],
                                       host=st.secrets["database"]["host"],
                                       port=st.secrets["database"]["port"],
                                       database=st.secrets["database"]["database"])
@@ -25,4 +25,3 @@ def database_page_show():
 
     except mysql.connector.Error as err:
         st.write("Something went wrong: {}".format(err))
-    return cnx, mycursor
