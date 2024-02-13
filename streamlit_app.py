@@ -73,7 +73,7 @@ with st.sidebar:
     st.subheader("Vytvořit nového asistenta")
     new_assistant_name = st.text_input("Název nového asistenta")
     new_assistant_instructions = st.text_area("Instrukce pro asistenta")
-    new_assistant_model = st.sidebar.selectbox('Vyberte model:',('gpt-4-0125-preview', 'gpt-4-preview', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-0125'),index=0)
+    new_assistant_model = st.sidebar.selectbox('Vyberte model:',('gpt-4-0125-preview', 'gpt-4-preview', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-0125'),index=0, key=0)
     if st.button("Vytvořit"):
         # Zde doplňte logiku pro vytvoření asistenta pomocí OpenAI API
         response = client.beta.assistants.create(name=new_assistant_name, instructions=new_assistant_instructions, model=new_assistant_instructions)
