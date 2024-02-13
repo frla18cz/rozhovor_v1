@@ -147,7 +147,9 @@ page = st.sidebar.selectbox(
     ["Hlavní strana", "Databáze"]
 )
 
-# Zapíná úvodní zprávu
-initialize_session()
-chat()
+if page == "Hlavní strana":
+    initialize_session() # Inicializace session state pro Streamlit aplikaci
+    chat()
+elif page == "Databáze":
+    page_database()
 
