@@ -52,8 +52,10 @@ if st.sidebar.button("Zobrazit debug informace o asistentovi"):
     try:
         # Načtení informací o asistentovi
         assistant_info = client.beta.assistants.retrieve(assistant_id)
-        # Převedení informací o asistentovi na řetězec ve formátu JSON pro lepší čitelnost
-        assistant_info_str = json.dumps(assistant_info, indent=2)
+
+        # Převod informací o asistentovi na řetězec
+        assistant_info_str = str(assistant_info)
+
         # Zobrazení informací v bočním panelu
         st.sidebar.text_area("Informace o asistentovi:", assistant_info_str, height=300)
     except Exception as e:
