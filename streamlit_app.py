@@ -118,6 +118,12 @@ def send_message_to_openai(prompt):
         with st.chat_message("assistant"):
             st.markdown(message.content[0].text.value)
 
+# Definice funkce pro stránku "Databáze"
+def page_database():
+    st.title("Databáze")
+    st.write("Zde bude obsah stránky databáze.")
+
+
 # Nastavení Streamlit
 st.set_page_config(page_title="Home page", page_icon=":speech_balloon:")
 st.title("😊💡Home page!🔍")
@@ -127,11 +133,18 @@ img_path = os.path.join(current_directory, 'img1.png')
 st.image(img_path, caption='', use_column_width=True)
 
 lottie_animation_uvodni("https://lottie.host/ae43b28d-b082-4249-bc22-144e1ceed7f7/ebUqhkyptl.json", 1)
+# Definice funkce pro stránku "Databáze"
 
 model_choice = st.sidebar.selectbox(
     'Vyberte model:',
     ('gpt-4-0125-preview', 'gpt-4-preview', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-0125'),
     index=3
+)
+
+# Přidání výběru stránky do sidebaru
+page = st.sidebar.selectbox(
+    "Vyberte stránku:",
+    ["Hlavní strana", "Databáze"]
 )
 
 # Zapíná úvodní zprávu
