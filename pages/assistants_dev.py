@@ -3,6 +3,7 @@ import streamlit as st
 import time
 import os
 from modules.lottie import lottie_animation_uvodni, lottie_animation, load_lottieurl
+st.set_page_config(page_title="Home page", page_icon=":speech_balloon:")
 
 # Inicializace API key a ID. Uloženo na cloudu Streamlit v secret
 openai.api_key = st.secrets["API_KEY"]
@@ -86,7 +87,6 @@ with st.sidebar.form("create_assistant_form"):
             st.sidebar.error("Asistenta se nepodařilo vytvořit.")
 
 # Nastavení Streamlit
-st.set_page_config(page_title="Home page", page_icon=":speech_balloon:")
 st.title("😊💡Home page!🔍")
 
 initialize_session()
