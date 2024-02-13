@@ -42,11 +42,11 @@ if asistenti_tuple:
 else:
     st.sidebar.error("Nepodařilo se načíst seznam asistentů.")
 
-model_choice = st.sidebar.selectbox(
-    'Vyberte model:',
-    ('gpt-4-0125-preview', 'gpt-4-preview', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-0125'),
-    index=3
-)
+# model_choice = st.sidebar.selectbox(
+#     'Vyberte model:',
+#     ('gpt-4-0125-preview', 'gpt-4-preview', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-0125'),
+#     index=3
+# )
 # Tlačítko pro načtení informací o asistentovi
 if st.sidebar.button("Zobrazit debug informace o asistentovi"):
     try:
@@ -66,12 +66,14 @@ with st.sidebar:
     st.header("Správa asistentů")
 
     # Sekce pro vytvoření nového asistenta
+    st.markdown("---")
     st.subheader("Vytvořit nového asistenta")
     new_assistant_name = st.text_input("Název nového asistenta")
     new_assistant_instructions = st.text_area("Instrukce pro asistenta")
+    new_assistant_instructions = st.sidebar.selectbox('Vyberte model:',('gpt-4-0125-preview', 'gpt-4-preview', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-0125'),index=0)
     if st.button("Vytvořit"):
         # Zde doplňte logiku pro vytvoření asistenta pomocí OpenAI API
-        response = client.beta.assistants.create(name=new_assistant_name, instructions=new_assistant_instructions)
+        response = client.beta.assistants.create(name=new_assistant_name, instructions=new_assistant_instructions, model=new_assistant_instructions)
         if response:
             st.success(f"Asistent {new_assistant_name} byl úspěšně vytvořen.")
 
