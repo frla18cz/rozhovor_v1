@@ -18,7 +18,9 @@ def database_page_show():
         mycursor.execute(query)
 
         myresult = mycursor.fetchall()
-        st.write(f"Připojili jsme se k databázi přes cloud streamlit: {st.secrets["database"]["database"]}\ntestovací výpis:{myresult}")
+        st.write(f"Připojili jsme se k databázi přes cloud streamlit")
+        st.write(st.secrets["database"]["database"])
+        st.write(f"testovací výpis:{myresult}")
         mycursor = cnx.cursor()
 
 
