@@ -5,6 +5,23 @@ import os
 from modules.lottie import lottie_animation_uvodni, lottie_animation, load_lottieurl
 
 
+# Nastavení Streamlit
+st.set_page_config(page_title="Home page", page_icon=":speech_balloon:")
+st.title("😊💡Home page!🔍")
+
+current_directory = os.path.dirname(os.path.abspath(__file__))
+img_path = os.path.join(current_directory, 'img1.png')
+st.image(img_path, caption='', use_column_width=True)
+
+lottie_animation_uvodni("https://lottie.host/ae43b28d-b082-4249-bc22-144e1ceed7f7/ebUqhkyptl.json", 1)
+# Definice funkce pro stránku "Databáze"
+
+model_choice = st.sidebar.selectbox(
+    'Vyberte model:',
+    ('gpt-4-0125-preview', 'gpt-4-preview', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-0125'),
+    index=3
+)
+
 # Inicializace api key a ID. Uloženo na cloudu streamlit v secret
 openai.api_key = st.secrets["API_KEY"]
 assistant_id = st.secrets["ASSISTANT_ID"]
@@ -118,22 +135,6 @@ def send_message_to_openai(prompt):
         with st.chat_message("assistant"):
             st.markdown(message.content[0].text.value)
 
-# Nastavení Streamlit
-st.set_page_config(page_title="Home page", page_icon=":speech_balloon:")
-st.title("😊💡Home page!🔍")
-
-current_directory = os.path.dirname(os.path.abspath(__file__))
-img_path = os.path.join(current_directory, 'img1.png')
-st.image(img_path, caption='', use_column_width=True)
-
-lottie_animation_uvodni("https://lottie.host/ae43b28d-b082-4249-bc22-144e1ceed7f7/ebUqhkyptl.json", 1)
-# Definice funkce pro stránku "Databáze"
-
-model_choice = st.sidebar.selectbox(
-    'Vyberte model:',
-    ('gpt-4-0125-preview', 'gpt-4-preview', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-0125'),
-    index=3
-)
 
 initialize_session() # Inicializace session state pro Streamlit aplikaci
 chat()
