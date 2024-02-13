@@ -1,8 +1,29 @@
 import streamlit as st
 import mysql.connector
 from modules.database.st_database_login import get_database_connection
+from modules.database.assistants_db_settings import get_assistants, get_assistant_by_id
 
 st.title("Databáze - Test")
+
+assistants = get_assistants()
+assistant_options = {assistant['name']: assistant['id'] for assistant in assistants}
+selected_assistant_id = st.selectbox("Vyberte assistenta:", options=list(assistant_options.values()), format_func=lambda x: assistant_options.get(x))
+selected_assistant = get_assistant_by_id(selected_assistant_id)
+
+if selected_assistant:
+    # Příprava dat pro zobrazení
+    assistant_data = {
+        "ID": [selected_assistant["id"]],
+        "Jméno": [selected_assistant["name"]],
+        "Instructions": [selected_assistant["instructions"]],
+    }
+
+    # Konverze dat do DataFrame pro lepší zobrazení v Streamlit
+    import pandas as pd
+    assistant_df = pd.DataFrame(assistant_data)
+
+    # Zobrazení tabulky s informacemi o asistentovi
+    st.table(assistant_df)
 
 
 def database_page_show():

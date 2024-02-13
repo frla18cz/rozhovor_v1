@@ -1,5 +1,3 @@
-#zatím nepouzivam
-
 import mysql.connector
 import streamlit as st
 def get_database_connection():
