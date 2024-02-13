@@ -1,5 +1,6 @@
 import streamlit as st
 import mysql.connector
+from modules.database.st_database_login import get_database_connection
 
 
 # Předpokládám, že `local_db_login` je funkce nebo proměnná, kterou zde nepoužíváte, takže ji z příkladu vynechávám.
@@ -11,13 +12,15 @@ def database_page_show():
     # Tlačítko pro spuštění databázového dotazu
     if st.button('Zobrazit poslední záznam'):
         try:
-            cnx = mysql.connector.connect(
-                user=st.secrets["database"]["user"],
-                password=st.secrets["database"]["password"],
-                host=st.secrets["database"]["host"],
-                port=st.secrets["database"]["port"],
-                database=st.secrets["database"]["database"]
-            )
+            # cnx = mysql.connector.connect(
+            #     user=st.secrets["database"]["user"],
+            #     password=st.secrets["database"]["password"],
+            #     host=st.secrets["database"]["host"],
+            #     port=st.secrets["database"]["port"],
+            #     database=st.secrets["database"]["database"]
+            # )
+
+            cnx = get_database_connection()
             mycursor = cnx.cursor()
             query = "SELECT * FROM table_rozhovor ORDER BY id DESC LIMIT 1"
             mycursor.execute(query)

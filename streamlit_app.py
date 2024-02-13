@@ -4,7 +4,7 @@ import time
 import os
 from modules.lottie import lottie_animation_uvodni, lottie_animation, load_lottieurl
 from pages.database import database_page_show
-
+import mysql.connector
 
 
 # Inicializace api key a ID. Uloženo na cloudu streamlit v secret
@@ -12,6 +12,16 @@ openai.api_key = st.secrets["API_KEY"]
 assistant_id = st.secrets["ASSISTANT_ID"]
 # assistant_id = "asst_atZWsxED84ngEs7lXxCAKR9Q" #Pro testovací účely, light prompt
 client = openai
+
+# Inicializace databaze
+cnx = mysql.connector.connect(
+    user=st.secrets["database"]["user"],
+    password=st.secrets["database"]["password"],
+    host=st.secrets["database"]["host"],
+    port=st.secrets["database"]["port"],
+    database=st.secrets["database"]["database"]
+)
+
 
 def initialize_session():
     """Inicializuje session state pro Streamlit aplikaci"""
