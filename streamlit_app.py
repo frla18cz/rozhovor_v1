@@ -61,6 +61,43 @@ if st.sidebar.button("Zobrazit debug informace o asistentovi"):
     except Exception as e:
         st.sidebar.error(f"Chyba při načítání informací o asistentovi: {e}")
 
+# Přidání sekce pro správu asistentů ve Streamlit
+with st.sidebar:
+    st.header("Správa asistentů")
+
+    # Sekce pro vytvoření nového asistenta
+    st.subheader("Vytvořit nového asistenta")
+    new_assistant_name = st.text_input("Název nového asistenta")
+    new_assistant_instructions = st.text_area("Instrukce pro asistenta")
+    if st.button("Vytvořit"):
+        # Zde doplňte logiku pro vytvoření asistenta pomocí OpenAI API
+        response = client.beta.assistants.create(name=new_assistant_name, instructions=new_assistant_instructions)
+        if response:
+            st.success(f"Asistent {new_assistant_name} byl úspěšně vytvořen.")
+
+    # Sekce pro aktualizaci existujícího asistenta
+    st.subheader("Aktualizovat asistenta")
+    assistant_to_update = st.selectbox("Vyberte asistenta pro aktualizaci", options=[a[1] for a in asistenti_tuple], index=0)
+    updated_instructions = st.text_area("Nové instrukce pro asistenta")
+    if st.button("Aktualizovat"):
+        # Zde doplňte logiku pro aktualizaci asistenta pomocí OpenAI API
+        # Předpokládejme, že pro aktualizaci potřebujeme ID asistenta
+        assistant_id_to_update = [a[0] for a in asistenti_tuple if a[1] == assistant_to_update][0]
+        response = client.beta.assistants.update(assistant_id=assistant_id_to_update, instructions=updated_instructions)
+        if response:
+            st.success(f"Asistent {assistant_to_update} byl úspěšně aktualizován.")
+
+    # Sekce pro odstranění asistenta
+    st.subheader("Odstranit asistenta")
+    assistant_to_delete = st.selectbox("Vyberte asistenta pro odstranění", options=[a[1] for a in asistenti_tuple], index=0)
+    if st.button("Odstranit"):
+        # Zde doplňte logiku pro odstranění asistenta pomocí OpenAI API
+        assistant_id_to_delete = [a[0] for a in asistenti_tuple if a[1] == assistant_to_delete][0]
+        response = client.beta.assistants.delete(assistant_id=assistant_id_to_delete)
+        if response:
+            st.success(f"Asistent {assistant_to_delete} byl úspěšně odstraněn.")
+
+
 
 def initialize_session():
     """Inicializuje session state pro Streamlit aplikaci"""
