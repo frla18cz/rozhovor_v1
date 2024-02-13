@@ -63,7 +63,10 @@ if st.sidebar.button("Zobrazit debug informace o asistentovi"):
 
 # Přidání sekce pro správu asistentů ve Streamlit
 with st.sidebar:
+    st.markdown("---")
     st.header("Správa asistentů")
+    st.markdown("---")
+
 
     # Sekce pro vytvoření nového asistenta
     st.markdown("---")
@@ -76,8 +79,10 @@ with st.sidebar:
         response = client.beta.assistants.create(name=new_assistant_name, instructions=new_assistant_instructions, model=new_assistant_instructions)
         if response:
             st.success(f"Asistent {new_assistant_name} byl úspěšně vytvořen.")
+            st.rerun()
 
     # Sekce pro aktualizaci existujícího asistenta
+    st.markdown("---")
     st.subheader("Aktualizovat asistenta")
     assistant_to_update = st.selectbox("Vyberte asistenta pro aktualizaci", options=[a[1] for a in asistenti_tuple], index=0)
     updated_instructions = st.text_area("Nové instrukce pro asistenta")
@@ -88,8 +93,10 @@ with st.sidebar:
         response = client.beta.assistants.update(assistant_id=assistant_id_to_update, instructions=updated_instructions)
         if response:
             st.success(f"Asistent {assistant_to_update} byl úspěšně aktualizován.")
+            st.rerun()
 
     # Sekce pro odstranění asistenta
+    st.markdown("---")
     st.subheader("Odstranit asistenta")
     assistant_to_delete = st.selectbox("Vyberte asistenta pro odstranění", options=[a[1] for a in asistenti_tuple], index=0)
     if st.button("Odstranit"):
@@ -98,7 +105,7 @@ with st.sidebar:
         response = client.beta.assistants.delete(assistant_id=assistant_id_to_delete)
         if response:
             st.success(f"Asistent {assistant_to_delete} byl úspěšně odstraněn.")
-
+            st.rerun()
 
 
 def initialize_session():
