@@ -3,7 +3,7 @@ import streamlit as st
 import time
 import os
 from modules.lottie import lottie_animation_uvodni, lottie_animation, load_lottieurl
-from pages.database import database_page_show
+# from pages.database import database_page_show
 import mysql.connector
 
 
@@ -13,14 +13,42 @@ assistant_id = st.secrets["ASSISTANT_ID"]
 # assistant_id = "asst_atZWsxED84ngEs7lXxCAKR9Q" #Pro testovací účely, light prompt
 client = openai
 
-# Inicializace databaze
-cnx = mysql.connector.connect(
-    user=st.secrets["database"]["user"],
-    password=st.secrets["database"]["password"],
-    host=st.secrets["database"]["host"],
-    port=st.secrets["database"]["port"],
-    database=st.secrets["database"]["database"]
-)
+
+def create_new_assistant(name, instructions, model):
+    """Funkce pro vytvoření nového asistenta."""
+    try:
+        assistant = client.beta.assistants.create(
+            name=name,
+            instructions=instructions,
+            tools=[],  # Prázdné pole 'tools' podle vaší požadavky
+            model=model
+        )
+        return assistant
+    except Exception as e:
+        st.sidebar.error(f"Chyba při vytváření asistenta: {e}")
+        return None
+
+
+# Přidání formuláře pro vytvoření asistenta do sidebaru
+with st.sidebar.form("create_assistant_form"):
+    st.write("Vytvořte nového asistenta")
+    assistant_name = st.text_input("Název asistenta")
+    assistant_instructions = st.text_area("Instrukce", height=100)
+    assistant_model = st.selectbox(
+        "Model",
+        ['gpt-4-1106-preview', 'gpt-4-0125-preview', 'gpt-4-preview', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-0125'],
+        index=0
+    )
+
+    submit_button = st.form_submit_button("Vytvořit asistenta")
+
+    if submit_button and assistant_name and assistant_instructions:
+        # Vytvoření asistenta s uživatelem zadanými informacemi
+        new_assistant = create_new_assistant(assistant_name, assistant_instructions, assistant_model)
+        if new_assistant:
+            st.sidebar.success(f"Asistent '{assistant_name}' byl úspěšně vytvořen!")
+        else:
+            st.sidebar.error("Asistenta se nepodařilo vytvořit.")
 
 
 def initialize_session():
@@ -138,7 +166,6 @@ img_path = os.path.join(current_directory, 'img1.png')
 st.image(img_path, caption='', use_column_width=True)
 
 lottie_animation_uvodni("https://lottie.host/ae43b28d-b082-4249-bc22-144e1ceed7f7/ebUqhkyptl.json", 1)
-# Definice funkce pro stránku "Databáze"
 
 model_choice = st.sidebar.selectbox(
     'Vyberte model:',
@@ -146,15 +173,10 @@ model_choice = st.sidebar.selectbox(
     index=3
 )
 
-# Přidání výběru stránky do sidebaru
-page = st.sidebar.selectbox(
-    "Vyberte stránku:",
-    ["Hlavní strana", "Databáze"]
-)
 
-if page == "Hlavní strana":
-    initialize_session() # Inicializace session state pro Streamlit aplikaci
-    chat()
-elif page == "Databáze":
-    database_page_show()
+
+
+initialize_session()
+chat()
+
 
