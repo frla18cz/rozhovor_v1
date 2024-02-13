@@ -3,6 +3,7 @@ import streamlit as st
 import time
 import os
 from modules.lottie import lottie_animation_uvodni, lottie_animation, load_lottieurl
+from pages.database import database_page_show
 
 
 
@@ -118,12 +119,6 @@ def send_message_to_openai(prompt):
         with st.chat_message("assistant"):
             st.markdown(message.content[0].text.value)
 
-# Definice funkce pro stránku "Databáze"
-def page_database():
-    st.title("Databáze")
-    st.write("Zde bude obsah stránky databáze.")
-
-
 # Nastavení Streamlit
 st.set_page_config(page_title="Home page", page_icon=":speech_balloon:")
 st.title("😊💡Home page!🔍")
@@ -151,5 +146,5 @@ if page == "Hlavní strana":
     initialize_session() # Inicializace session state pro Streamlit aplikaci
     chat()
 elif page == "Databáze":
-    page_database()
+    database_page_show()
 
