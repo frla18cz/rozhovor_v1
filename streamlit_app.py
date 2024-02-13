@@ -86,7 +86,7 @@ with st.sidebar:
     st.subheader("Aktualizovat asistenta")
     assistant_to_update = st.selectbox("Vyberte asistenta pro aktualizaci", options=[a[1] for a in asistenti_tuple], index=0)
     updated_instructions = st.text_area("Nové instrukce pro asistenta")
-    model_to_update = st.sidebar.selectbox('Vyberte model:',('gpt-4-0125-preview', 'gpt-4-preview', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-0125'),index=0)
+    model_to_update = st.sidebar.selectbox('Vyberte model:',('gpt-4-0125-preview', 'gpt-4-preview', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-0125'),index=0, key=1)
 
     if st.button("Aktualizovat"):
         # Logikapro aktualizaci asistenta pomocí OpenAI API
