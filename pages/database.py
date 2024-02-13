@@ -4,33 +4,44 @@ import pandas as pd
 from modules.database.st_database_login import get_database_connection
 from modules.database.assistants_db_settings import get_assistants, get_assistant_by_id
 
+
 st.title("Databáze - Test")
 
 assistants = get_assistants()
 if assistants:  # Zkontrolujte, zda existují nějací asistenti
-    assistant_options = {assistant['name']: assistant['id'] for assistant in assistants}
-    selected_assistant_id = st.selectbox("Vyberte assistenta:", options=[0] + list(assistant_options.values()), format_func=lambda x: assistant_options.get(x, "Vyberte..."))
-    if selected_assistant_id != 0:
-        if st.button("Zobrazit informace"):
-            selected_assistant = get_assistant_by_id(selected_assistant_id)
+    # Vytvoření slovníku pro možnosti výběru s předvolbou "Vyberte..."
+    assistant_options = {"Vyberte...": 0}
+    # Přidání skutečných asistentů do slovníku možností
+    assistant_options.update({assistant['name']: assistant['id'] for assistant in assistants})
 
-            if selected_assistant:
-                # Příprava dat pro zobrazení
-                assistant_data = {
-                    "ID": [selected_assistant["id"]],
-                    "Jméno": [selected_assistant["name"]],
-                    "Instructions": [selected_assistant["instructions"]],
-                }
+    # Umožnění uživatelům vybrat asistenta
+    selected_assistant_id = st.selectbox(
+        "Vyberte assistenta:",
+        options=list(assistant_options.values()),
+        format_func=lambda x: [name for name, id in assistant_options.items() if id == x][0]
+    )
 
-                # Konverze dat do DataFrame pro lepší zobrazení v Streamlit
-                assistant_df = pd.DataFrame(assistant_data)
+    if selected_assistant_id and selected_assistant_id != 0:
+        selected_assistant = get_assistant_by_id(selected_assistant_id)
 
-                # Zobrazení tabulky s informacemi o asistentovi
-                st.table(assistant_df)
+        if selected_assistant:
+            # Příprava dat pro zobrazení
+            assistant_data = {
+                "ID": [selected_assistant["id"]],
+                "Jméno": [selected_assistant["name"]],
+                "Instructions": [selected_assistant["instructions"]],
+            }
+
+            # Konverze dat do DataFrame pro lepší zobrazení v Streamlit
+            assistant_df = pd.DataFrame(assistant_data)
+
+            # Zobrazení tabulky s informacemi o asistentovi
+            st.table(assistant_df)
     else:
-        st.write("Nejprve vyberte asistenta.")
+        st.write("Vyberte asistenta z nabídky.")
 else:
     st.write("Nebyli nalezeni žádní asistenti.")
+
 
 def database_page_show():
     st.title("Databáze")
