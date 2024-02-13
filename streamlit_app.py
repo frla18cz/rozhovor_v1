@@ -3,6 +3,7 @@ import streamlit as st
 import time
 import os
 from modules.lottie import lottie_animation_uvodni, lottie_animation, load_lottieurl
+import json
 
 
 # Inicializace api key. Uloženo na cloudu streamlit v secret
@@ -46,6 +47,17 @@ model_choice = st.sidebar.selectbox(
     ('gpt-4-0125-preview', 'gpt-4-preview', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-0125'),
     index=3
 )
+# Tlačítko pro načtení informací o asistentovi
+if st.sidebar.button("Zobrazit debug informace o asistentovi"):
+    try:
+        # Načtení informací o asistentovi
+        assistant_info = client.beta.assistants.retrieve(assistant_id)
+        # Převedení informací o asistentovi na řetězec ve formátu JSON pro lepší čitelnost
+        assistant_info_str = json.dumps(assistant_info, indent=2)
+        # Zobrazení informací v bočním panelu
+        st.sidebar.text_area("Informace o asistentovi:", assistant_info_str, height=300)
+    except Exception as e:
+        st.sidebar.error(f"Chyba při načítání informací o asistentovi: {e}")
 
 
 def initialize_session():
