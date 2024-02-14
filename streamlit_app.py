@@ -76,7 +76,7 @@ with st.sidebar:
     new_assistant_model = st.sidebar.selectbox('Vyberte model:',('gpt-4-0125-preview', 'gpt-4-preview', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-0125'),index=0,  key="new_model_select_key")
     if st.button("Vytvořit"):
         # Zde doplňte logiku pro vytvoření asistenta pomocí OpenAI API
-        response = client.beta.assistants.create(name=new_assistant_name, instructions=new_assistant_instructions, model=new_assistant_instructions)
+        response = client.beta.assistants.create(name=new_assistant_name, instructions=new_assistant_instructions, model=new_assistant_model)
         if response:
             st.success(f"Asistent {new_assistant_name} byl úspěšně vytvořen.")
             # st.rerun()
