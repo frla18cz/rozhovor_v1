@@ -6,10 +6,10 @@ openai.api_key = st.secrets["API_KEY"]
 client = openai
 
 def generate_response_with_openai(context, prompt, temperature, max_tokens):
-    """Generuje odpověď pomocí OpenAI API na základě zadaných parametrů."""
+    st.write("Generování odpovědi s parametry:", {"context": context, "prompt": prompt, "temperature": temperature, "max_tokens": max_tokens})  # Logování parametrů
     full_prompt = f"{context}\n{prompt}"
     response = openai.Completion.create(
-        engine="text-davinci-003",  # Můžete zvolit jiný model podle vašeho výběru
+        engine="gpt-4-0125-preview",
         prompt=full_prompt,
         temperature=temperature,
         max_tokens=max_tokens,
@@ -18,15 +18,17 @@ def generate_response_with_openai(context, prompt, temperature, max_tokens):
         presence_penalty=0.0,
         stop=[" Asistent 1:", " Asistent 2:"]
     )
+    st.write("Odpověď z OpenAI:", response.choices[0].text.strip())  # Logování odpovědi
     return response.choices[0].text.strip()
 
-
 def update_conversation():
-    """Aktualizuje konverzaci střídavě mezi oběma asistenty."""
-    if st.session_state.conversation:  # Pokud už konverzace začala
+    st.write("Aktualizace konverzace...")  # Logování volání funkce
+    if st.session_state.conversation:
         context = "\n".join(st.session_state.conversation)
+        st.write(f"Aktuální kontext: {context}")  # Kontrola kontextu
         next_assistant_id = 1 if len(st.session_state.conversation) % 2 == 0 else 2
 
+        # Přiřazení podle ID asistenta
         if next_assistant_id == 1:
             prompt = assistant_1_prompt
             temperature = assistant_1_temperature
@@ -38,6 +40,8 @@ def update_conversation():
 
         new_message = generate_response_with_openai(context, prompt, temperature, max_tokens)
         st.session_state.conversation.append(new_message)
+        st.write("Nová zpráva přidána do konverzace.")  # Logování přidání zprávy
+
 
 
 # Umožní uživatelům nastavit parametry pro každého asistenta
@@ -56,11 +60,12 @@ if 'conversation' not in st.session_state:
 st.title('Konverzace mezi dvěma asistenty s OpenAI')
 
 if st.button('Zahájit / Resetovat konverzaci'):
+    st.write("Zahájení nebo resetování konverzace...")  # Logování stisku tlačítka
     st.session_state.conversation = []
-    # Po zahájení konverzace automaticky generujte první zprávu od Asistenta 1
     update_conversation()
 
 if st.button('Pokračovat v konverzaci'):
+    st.write("Pokračování v konverzaci...")  # Logování stisku tlačítka
     update_conversation()
 
 # Zobrazení celé historie konverzace
