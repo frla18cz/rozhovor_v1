@@ -36,7 +36,7 @@ if not check_password():
 
 
 # Inicializace api key. Uloženo na cloudu streamlit v secret
-openai.api_key = st.secrets["API_KEY"]
+OpenAI.api_key = st.secrets["API_KEY"]
 client = OpenAI(organization=st.secrets["organization"])
 
 # Funkce pro načtení seznamu asistentů
