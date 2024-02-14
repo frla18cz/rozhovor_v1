@@ -79,7 +79,7 @@ with st.sidebar:
         response = client.beta.assistants.create(name=new_assistant_name, instructions=new_assistant_instructions, model=new_assistant_instructions)
         if response:
             st.success(f"Asistent {new_assistant_name} byl úspěšně vytvořen.")
-            st.rerun()
+            # st.rerun()
 
     # Sekce pro aktualizaci existujícího asistenta
     st.markdown("---")
@@ -95,7 +95,7 @@ with st.sidebar:
         response = client.beta.assistants.update(assistant_id=assistant_id_to_update, instructions=updated_instructions, model=model_to_update)
         if response:
             st.success(f"Asistent {assistant_to_update} byl úspěšně aktualizován.")
-            st.experimental_rerun()
+            # st.experimental_rerun()
 
     # Sekce pro odstranění asistenta
     st.markdown("---")
@@ -107,7 +107,7 @@ with st.sidebar:
         response = client.beta.assistants.delete(assistant_id=assistant_id_to_delete)
         if response:
             st.success(f"Asistent {assistant_to_delete} byl úspěšně odstraněn.")
-            st.rerun()
+            # st.rerun()
 
 
 def initialize_session():
