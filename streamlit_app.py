@@ -37,9 +37,15 @@ if not check_password():
 
 
 
-OpenAI.api_key = st.secrets["API_KEY"]
-OpenAI.organization = st.secrets["organization"]
-client = OpenAI()
+# OpenAI.api_key = st.secrets["API_KEY"]
+# OpenAI.organization = st.secrets["organization"]
+# client = OpenAI()
+
+api_key = st.secrets["API_KEY"]
+organization = st.secrets["organization"]
+
+client = OpenAI(api_key=api_key)
+client.organization = organization
 
 
 
