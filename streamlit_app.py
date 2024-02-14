@@ -6,6 +6,7 @@ from modules.lottie import lottie_animation_uvodni, lottie_animation, load_lotti
 import json
 
 
+
 # Inicializace api key. Uloženo na cloudu streamlit v secret
 openai.api_key = st.secrets["API_KEY"]
 # assistant_id = st.secrets["ASSISTANT_ID"]
@@ -32,7 +33,7 @@ img_path = os.path.join(current_directory, 'img1.png')
 st.image(img_path, caption='', use_column_width=True)
 
 lottie_animation_uvodni("https://lottie.host/ae43b28d-b082-4249-bc22-144e1ceed7f7/ebUqhkyptl.json", 1)
-# Definice funkce pro stránku "Databáze"
+
 
 # Vytvoření rozklikávacího seznamu pro výběr asistenta
 asistenti_tuple = nacist_seznam_asistentu()
@@ -79,6 +80,7 @@ with st.sidebar:
         response = client.beta.assistants.create(name=new_assistant_name, instructions=new_assistant_instructions, model=new_assistant_model)
         if response:
             st.success(f"Asistent {new_assistant_name} byl úspěšně vytvořen.")
+            time.sleep(1)
             st.rerun()
 
     # Sekce pro aktualizaci existujícího asistenta
@@ -95,6 +97,7 @@ with st.sidebar:
         response = client.beta.assistants.update(assistant_id=assistant_id_to_update, instructions=updated_instructions, model=model_to_update)
         if response:
             st.success(f"Asistent {assistant_to_update} byl úspěšně aktualizován.")
+            time.sleep(1)
             st.rerun()
 
     # Sekce pro odstranění asistenta
@@ -107,8 +110,8 @@ with st.sidebar:
         response = client.beta.assistants.delete(assistant_id=assistant_id_to_delete)
         if response:
             st.success(f"Asistent {assistant_to_delete} byl úspěšně odstraněn.")
+            time.sleep(1)
             st.rerun()
-
 
 def initialize_session():
     """Inicializuje session state pro Streamlit aplikaci"""
