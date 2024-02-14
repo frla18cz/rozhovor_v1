@@ -2,8 +2,8 @@ import streamlit as st
 import openai
 
 # Předpokládáme, že jste svůj OpenAI API klíč uložili do Streamlit Secrets
-openai.api_key = st.secrets["openai_api_key"]
-
+openai.api_key = st.secrets["API_KEY"]
+client = openai
 
 def generate_response_with_openai(context, prompt, temperature, max_tokens):
     """Generuje odpověď pomocí OpenAI API na základě zadaných parametrů."""
