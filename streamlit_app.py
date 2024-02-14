@@ -35,9 +35,13 @@ if not check_password():
     st.stop()  # Do not continue if check_password is not True.
 
 
-# Inicializace api key. Uloženo na cloudu streamlit v secret
+
+
 OpenAI.api_key = st.secrets["API_KEY"]
-client = OpenAI(organization=st.secrets["organization"])
+OpenAI.organization = st.secrets["organization"]
+client = OpenAI()
+
+
 
 # Funkce pro načtení seznamu asistentů
 def nacist_seznam_asistentu():
