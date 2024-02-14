@@ -33,7 +33,7 @@ def check_password():
 if not check_password():
     st.stop()  # Do not continue if check_password is not True.
 
-    
+
 
 # Inicializace api key. Uloženo na cloudu streamlit v secret
 openai.api_key = st.secrets["API_KEY"]
