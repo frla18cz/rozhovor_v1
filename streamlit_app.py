@@ -1,4 +1,5 @@
 import openai
+from openai import OpenAI
 import streamlit as st
 import time
 import os
@@ -34,10 +35,9 @@ if not check_password():
     st.stop()  # Do not continue if check_password is not True.
 
 
-
 # Inicializace api key. Uloženo na cloudu streamlit v secret
 openai.api_key = st.secrets["API_KEY"]
-client = openai
+client = OpenAI(organization=st.secrets["organization"])
 
 # Funkce pro načtení seznamu asistentů
 def nacist_seznam_asistentu():
