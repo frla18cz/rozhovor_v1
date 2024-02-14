@@ -3,14 +3,10 @@ import streamlit as st
 import time
 import os
 from modules.lottie import lottie_animation_uvodni, lottie_animation, load_lottieurl
-import json
-
 
 
 # Inicializace api key. Uloženo na cloudu streamlit v secret
 openai.api_key = st.secrets["API_KEY"]
-# assistant_id = st.secrets["ASSISTANT_ID"]
-# assistant_id = "asst_atZWsxED84ngEs7lXxCAKR9Q" #Pro testovací účely, light prompt
 client = openai
 
 # Funkce pro načtení seznamu asistentů
@@ -43,21 +39,16 @@ if asistenti_tuple:
 else:
     st.sidebar.error("Nepodařilo se načíst seznam asistentů.")
 
-# model_choice = st.sidebar.selectbox(
-#     'Vyberte model:',
-#     ('gpt-4-0125-preview', 'gpt-4-preview', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-0125'),
-#     index=3
-# )
 # Tlačítko pro načtení informací o asistentovi
 if st.sidebar.button("Zobrazit debug informace o asistentovi"):
     try:
         # Načtení informací o asistentovi
         assistant_info = client.beta.assistants.retrieve(assistant_id)
 
-        # Převod informací o asistentovi na řetězec
+        # Převod informací o asistentovi na string
         assistant_info_str = str(assistant_info)
 
-        # Zobrazení informací v bočním panelu
+        # Zobrazení informací v sidebaru
         st.sidebar.text_area("Informace o asistentovi:", assistant_info_str, height=300)
     except Exception as e:
         st.sidebar.error(f"Chyba při načítání informací o asistentovi: {e}")
@@ -92,7 +83,7 @@ with st.sidebar:
     st.write(f"Vybraný model: {model_to_update}")
 
     if st.button("Aktualizovat"):
-        # Logikapro aktualizaci asistenta pomocí OpenAI API
+        # Logika pro aktualizaci asistenta pomocí OpenAI API
         assistant_id_to_update = [a[0] for a in asistenti_tuple if a[1] == assistant_to_update][0]
         response = client.beta.assistants.update(assistant_id=assistant_id_to_update, instructions=updated_instructions, model=model_to_update)
         if response:
@@ -155,7 +146,7 @@ def display_messages():
 
 
 def process_user_input():
-    """Zpracovává uživatelský vstup a odesílá jej do OpenAI."""
+    """Zpracovává user input a odesílá jej do OpenAI."""
     prompt = st.chat_input("...")
     if prompt:
         st.write("Já😊: ", prompt)
